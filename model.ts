@@ -1,5 +1,5 @@
 
-// 1. Define the allowed task statuses
+// 1. Define allowed task statuses
 export type TaskStatus = "todo" | "in-progress" | "done";
 
 // 2. Define the Task interface
@@ -9,15 +9,13 @@ export interface Task {
   status: TaskStatus;
 }
 
-// 3. Add a new task
-export function addTask(tasks: Task[], title: string): Task[] {
-  const nextId =
-    tasks.length === 0
-      ? 1
-      : Math.max(...tasks.map((task) => task.id)) + 1;
+// 3. Generate unique IDs
+let nextId = 1;
 
+// 4. Add a new task
+export function addTask(tasks: Task[], title: string): Task[] {
   const newTask: Task = {
-    id: nextId,
+    id: nextId++,
     title: title,
     status: "todo"
   };
@@ -25,34 +23,27 @@ export function addTask(tasks: Task[], title: string): Task[] {
   return [...tasks, newTask];
 }
 
-// 4. Complete a task
+// 5. Complete a task
 export function completeTask(tasks: Task[], id: number): Task[] {
   return tasks.map((task) =>
-    task.id === id
-      ? { ...task, status: "done" }
-      : task
+    task.id === id ? { ...task, status: "done" } : task
   );
 }
 
-// 5. Filter tasks by status
-export function filterByStatus(
-  tasks: Task[],
-  status: TaskStatus
-): Task[] {
+// 6. Filter tasks by status
+export function filterByStatus(tasks: Task[], status: TaskStatus): Task[] {
   return tasks.filter((task) => task.status === status);
 }
 
-// 6. Extra operation: Delete a task
+// 7. YOUR EXTRA OPERATION: Delete a task
 export function deleteTask(tasks: Task[], id: number): Task[] {
   return tasks.filter((task) => task.id !== id);
 }
 
-// 7. Extra operation: Advance task status
+// 8. Extra operation: Advance task status
 export function advanceTask(tasks: Task[], id: number): Task[] {
   return tasks.map((task) => {
-    if (task.id !== id) {
-      return task;
-    }
+    if (task.id !== id) return task;
 
     if (task.status === "todo") {
       return { ...task, status: "in-progress" };
